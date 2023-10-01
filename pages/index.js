@@ -29,11 +29,11 @@ export default function Home() {
     setSelectedIndex(index);
     setShow(true);
   };
-  // const userDeleteHandler = (index) => {
-  //   dispatch(removeUser(selectedIndex));
-  //   setSelectedIndex(null);
-  //   setShow(false);
-  // };
+  const userDeleteHandler = (index) => {
+    dispatch(removeUser(selectedIndex));
+    setSelectedIndex(null);
+    setShow(false);
+  };
 
   return (
     <>
