@@ -1,18 +1,29 @@
-import React, { useState } from "react";
-import { addUser } from "../Redux/userSlice";
+import React, { useEffect, useState } from "react";
+import { addUser, updateUser } from "../Redux/userSlice";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-function UserForm() {
+function EditUserForm() {
   const router = useRouter();
   const dispatch = useDispatch();
   const [userForm, setUserForm] = useState({
     id: "",
-    first: "",
-    second: "",
+    first_name: "",
+    last_name: "",
     email: "",
     image: "",
   });
+
+  const users = useSelector((state) => state.user.users);
+
+  useEffect(() => {
+    const userId = router.query.id;
+    const selectedUser = users.find((user) => user.id.toString() === userId);
+
+    if (selectedUser) {
+      setUserForm(selectedUser);
+    }
+  }, [router.query.id, users]);
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -26,22 +37,14 @@ function UserForm() {
     }
   };
 
-  const handleAddUser = (e) => {
+  const handleUpdateUser = (e) => {
     e.preventDefault();
-    const newUser = {
-      id: userForm.id,
-      first_name: userForm.first,
-      last_name: userForm.last,
-      email: userForm.email,
-      avatar: userForm.image,
-    };
-
-    dispatch(addUser(newUser));
+    dispatch(updateUser(userForm));
     router.push("/");
   };
 
   return (
-    <form onSubmit={(e) => handleAddUser(e)}>
+    <form onSubmit={(e) => handleUpdateUser(e)}>
       <div className="form-group">
         <label for="exampleInputEmail1">Id</label>
         <input
@@ -50,6 +53,7 @@ function UserForm() {
           type="number"
           className="form-control"
           id="id"
+          value={userForm.id}
           placeholder="Enter Id"
         />
       </div>
@@ -60,7 +64,8 @@ function UserForm() {
           onChange={(e) => handleChange(e)}
           type="text"
           className="form-control"
-          id="first"
+          id="first_name"
+          value={userForm.first_name}
           aria-describedby="emailHelp"
           placeholder="Enter First Name"
         />
@@ -72,7 +77,8 @@ function UserForm() {
           onChange={(e) => handleChange(e)}
           type="text"
           className="form-control"
-          id="second"
+          id="last_name"
+          value={userForm.last_name}
           aria-describedby="emailHelp"
           placeholder="Enter Second Name"
         />
@@ -85,6 +91,7 @@ function UserForm() {
           type="email"
           className="form-control"
           id="email"
+          value={userForm.email}
           aria-describedby="emailHelp"
           placeholder="Enter email"
         />
@@ -92,7 +99,6 @@ function UserForm() {
       <div className="form-group">
         <label for="exampleInputPassword1">Avatar</label>
         <input
-          required
           onChange={(e) => handleChange(e)}
           type="file"
           className="form-control"
@@ -100,11 +106,11 @@ function UserForm() {
           id="image"
         />
       </div>
-      <button type="submit" className="my-2  btn btn-primary">
-        Submit
+      <button type="submit" className="my-2 btn btn-primary">
+        Update
       </button>
     </form>
   );
 }
 
-export default UserForm;
+export default EditUserForm;

@@ -1,7 +1,7 @@
 import React from "react";
-import UserForm from "../components/UserForm";
+import EditUserForm from "../../components/EditUserForm";
 
-function addUsers() {
+function EditUser() {
   return (
     <div className="container">
       <div className="table-responsive">
@@ -15,11 +15,11 @@ function addUsers() {
               </div>
             </div>
           </div>
-          <UserForm />
+          <EditUserForm />
         </div>
       </div>
     </div>
   );
 }
 
-export default addUsers;
+export default EditUser;

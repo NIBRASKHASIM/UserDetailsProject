@@ -6,10 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { removeUser, setUsers } from "../Redux/userSlice";
 import Link from "next/link";
 import { Modal } from "antd";
+import { useRouter } from "next/router";
 export default function Home() {
   const dispatch = useDispatch();
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [show, setShow] = useState(false);
+  const router = useRouter();
   const users = useSelector((state) => state.user.users);
   useEffect(() => {
     if (users.length === 0) {
@@ -92,7 +94,11 @@ export default function Home() {
                     </td>
                     <td>{item.email}</td>
                     <td>
-                      <button type="button" className="btn btn-secondary">
+                      <button
+                        type="button"
+                        onClick={() => router.push(`/edit-user/${item.id}`)}
+                        className="btn btn-secondary"
+                      >
                         Edit
                       </button>
                     </td>
